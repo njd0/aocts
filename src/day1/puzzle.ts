@@ -1,6 +1,7 @@
 import readFile from '@/utils/file';
+import puzzleContainer from '@/utils/puzzle';
 
-export function Day1Part1() {
+export function Part1() {
   const inputs: number[] = [];
   const data = readFile('./src/day1/puzzle.txt');
 
@@ -28,7 +29,7 @@ const swap: {
   nine: '9',
 };
 
-export function Day1Part2() {
+export function Part2() {
   const inputs: number[] = [];
   const data = readFile('./src/day1/puzzle.txt');
 
@@ -60,3 +61,5 @@ export function Day1Part2() {
   const sum = inputs.reduce((prev, curr) => prev + curr, 0);
   console.log('Part 2 Answer', sum);
 }
+
+export default puzzleContainer(Part1, Part2);
