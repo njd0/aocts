@@ -1,0 +1,16 @@
+# Compiled JavaScript files
+*.js
+*.js.map
+*.d.ts
+
+# Log files
+*.log
+
+# Dependency directories
+node_modules/
+
+# IDE/editor specific files
+.vscode/
+.idea/
+
+build/
