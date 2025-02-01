@@ -1,7 +1,7 @@
-import puzzle from '@/day3/puzzle';
+import puzzle from '@/day5/puzzle';
 
 function main() {
-  puzzle.part1();
+  puzzle.part2();
 }
 
 main();

@@ -1,22 +1,6 @@
-import readFile, {writeFile} from '@/utils/file';
+import readFile from '@/utils/file';
 import puzzleContainer from '@/utils/puzzle';
-import {Vector} from '@/utils/types';
 import _ from 'lodash';
-
-type Numbers = {
-  [row: number]: {
-    num: number;
-    startEnd: Vector;
-  }[];
-};
-
-const replaceAt = function (str: string, index: number, replacement: string) {
-  return (
-    str.substring(0, index) +
-    replacement +
-    str.substring(index + replacement.length)
-  );
-};
 
 function getKey(x: number | string, y: number | string) {
   return `${x},${y}`;
@@ -60,9 +44,54 @@ function Part1() {
     row++;
   });
 
-  console.log({total});
+  console.log('Part 1 Answer: ', total);
 }
 
-function Part2() {}
+function Part2() {
+  const data = readFile('./src/day3/puzzle.txt');
+
+  // gather all numbers next to gearChar that fit requirements:
+  // loop all numbers. if next to *, add * pos to map and array of numbers
+  // after number loop, do required math for all values w/ ecxactly 2
+  const gearMap: {[k: string]: number[]} = {};
+  let row = 0;
+  data.forEach(line => {
+    const numberMatches = Array.from(line.matchAll(/\d+/g));
+    // each number of row
+    numberMatches.forEach(number => {
+      const num = number[0];
+      // gather edges
+      const edges: string[][] = [row - 1, row, row + 1].map(r =>
+        Array.from({length: num.length + 2}, (_, i) =>
+          getKey(i + (number.index - 1), r),
+        ),
+      );
+
+      const flatEdges = _.flatMap(edges);
+      for (let i = 0; i < flatEdges.length; ++i) {
+        const key = parseKey(flatEdges[i]);
+        const c = data?.[key[1]]?.[key[0]];
+        if (c && /\*/.test(c)) {
+          const gearKey = getKey(key[0], key[1]);
+          if (!gearMap[gearKey]) {
+            gearMap[gearKey] = [];
+          }
+          gearMap[gearKey].push(Number(num));
+        }
+      }
+    });
+
+    row++;
+  });
+
+  const total = Object.values(gearMap)
+    .filter(arr => arr.length === 2)
+    .reduce((prev, curr) => {
+      prev += curr[0] * curr[1];
+      return prev;
+    }, 0);
+
+  console.log('Part 2 Answer', total);
+}
 
 export default puzzleContainer(Part1, Part2);
