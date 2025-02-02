@@ -1,4 +1,4 @@
-import puzzle from '@/day6/puzzle';
+import puzzle from '@/day7/puzzle';
 
 function main() {
   puzzle.part2();
